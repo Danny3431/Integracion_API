@@ -21,8 +21,14 @@ import androidx.navigation.NavController
 import cl.bootcamp.integracion_api.viewmodel.NewsViewModel
 import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.font.FontStyle
+import cl.bootcamp.integracion_api.components.NewsDetailCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,13 +39,8 @@ fun DetailView(
     navController: NavController,
     viewModel: NewsViewModel
 ) {
-    // Recupera el artículo del ViewModel usando el `id` `
-    val article = articleId?.let { viewModel.getArticleByIdOrName(it, null) }
-    Log.d("DetailView", "Recibido articleId: $articleId, Artículo recibido: $article")
+    val article = viewModel.getArticleByIdOrName(articleId, articleName)
 
-
-
-    // Si el artículo es nulo, muestra un mensaje
     if (article == null) {
         Text("Noticia no encontrada")
         return
@@ -56,40 +57,37 @@ fun DetailView(
                         overflow = TextOverflow.Ellipsis
                     )
                 },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver",
+                            tint = Color.White
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Blue),
                 modifier = Modifier.height(75.dp)
             )
         },
-    ) {innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
-            // Imagen de la noticia
-            val imagePainter = rememberAsyncImagePainter(article.urlToImage)
-            Image(
-                painter = imagePainter,
-                contentDescription = "Imagen de la noticia",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Información del artículo
-            Text("Autor: ${article.author ?: "Desconocido"}", fontSize = 18.sp, color = Color.DarkGray)
-            Text("Título: ${article.title}", fontSize = 20.sp, color = Color.Black)
-            Text("Descripción: ${article.description ?: "Sin descripción"}", fontSize = 18.sp, fontStyle = FontStyle.Italic)
-            Text("URL: ${article.url}", fontSize = 16.sp, color = Color.Blue)
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            // Llamada a la tarjeta de detalles
+            NewsDetailCard(article)
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón para regresar
+           /* // Botón adicional de regresar, si es necesario
             Button(onClick = {
                 navController.popBackStack()
                 viewModel.cleanSelectedArticle()
             }) {
                 Text("Volver")
-            }
+            }*/
         }
     }
 }
