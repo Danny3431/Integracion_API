@@ -19,3 +19,4 @@ interface NewsApi {
         @Query("apiKey") apiKey: String = Constants.API_KEY
     ): Response<NewsResponse>
 }
+
