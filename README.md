@@ -101,8 +101,11 @@ Realiza tus cambios y haz commit: git commit -am 'Agregar nueva funcionalidad'.
 Haz push a la rama: git push origin feature/nueva-funcionalidad.
 Envía un Pull Request.
 
-## 📜 Licencia
-Este proyecto está licenciado bajo la MIT License.
+##  ✍️ Autores
+
+Proyecto desarrollado como parte del Bootcamp Desarrollo de Aplicaciones Móviles Android Trainee v2.0 en Adalid.
+
+¡Espero que disfrutes de la aplicación! 📲
 
 
 Asegúrate de sustituir `TU_API_KEY_AQUI` con tu clave de API real
